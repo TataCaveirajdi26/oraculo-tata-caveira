@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oráculo do Tatá Caveira</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #d4d4d4;
+            font-family: 'Garamond', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            background: #151515;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+        h1 { color: #b30000; text-align: center; font-size: 1.8rem; margin-bottom: 25px; }
+        label { display: block; margin-top: 10px; font-size: 0.9rem; color: #888; }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px 0;
+            background: #202020;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .cards-area {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .card {
+            width: 60px;
+            height: 90px;
+            background: #1a1a1a;
+            border: 2px solid #b30000;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #b30000;
+            transition: 0.3s;
+        }
+        .card.selected { background: #b30000; color: gold; transform: translateY(-10px); border-color: gold; }
+        
+        #btn-revelar {
+            width: 100%;
+            padding: 15px;
+            background: #4a0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+        #btn-revelar:hover { background: #7a0000; }
+
+        #resultado {
+            margin-top: 25px;
+            padding: 20px;
+            background: #000;
+            border-left: 4px solid #b30000;
+            display: none;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #555;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>💀 Oráculo do Tatá Caveira</h1>
+    
+    <label>Nome Completo:</label>
+    <input type="text" id="nome" placeholder="Seu nome...">
+    
+    <label>Data de Nascimento:</label>
+    <input type="date" id="dataNasc">
+    
+    <label>Sua Pergunta (seja breve):</label>
+    <textarea id="pergunta" placeholder="Ex: Vou conseguir o emprego?"></textarea>
+
+    <p style="text-align: center; font-size: 0.9rem;">Escolha 3 números:</p>
+    <div class="cards-area">
+        <div class="card" onclick="selectCard(this)">1</div>
+        <div class="card" onclick="selectCard(this)">2</div>
+        <div class="card" onclick="selectCard(this)">3</div>
+        <div class="card" onclick="selectCard(this)">4</div>
+        <div class="card" onclick="selectCard(this)">5</div>
+    </div>
+
+    <button id="btn-revelar" onclick="revelarDestino()">REVELAR CONSELHO</button>
+
+    <div id="resultado">
+        <strong id="res-nome" style="color: gold; display: block; margin-bottom: 10px;"></strong>
+        <p id="res-texto"></p>
+    </div>
+</div>
+
+<footer>
+    Criado e desenvolvido por Daniel Almeida
+</footer>
+
+<script>
+    let cartasSelecionadas = 0;
+
+    function selectCard(element) {
+        if (!element.classList.contains('selected') && cartasSelecionadas < 3) {
+            element.classList.add('selected');
+            cartasSelecionadas++;
+        }
+    }
+
+    function revelarDestino() {
+        const nome = document.getElementById('nome').value;
+        const pergunta = document.getElementById('pergunta').value.toLowerCase();
+
+        if (!nome || !pergunta || cartasSelecionadas < 3) {
+            alert("Preencha tudo e escolha 3 números!");
+            return;
+        }
+
+        let resposta = "";
+
+        // Lógica de nexo com a pergunta
+        if (pergunta.includes("amor") || pergunta.includes("ele") || pergunta.includes("ela") || pergunta.includes("namoro")) {
+            resposta = "Tatá Caveira vê que sentimentos do passado ainda rondam. Para o amor florescer, é preciso limpar as mágoas antigas. O destino exige honestidade.";
+        } else if (pergunta.includes("dinheiro") || pergunta.includes("trabalho") || pergunta.includes("emprego") || pergunta.includes("pagar")) {
+            resposta = "O campo material exige estratégia. Tatá Caveira indica que a porta vai abrir, mas você deve agir com a frieza da razão, sem se deixar levar pela ansiedade.";
+        } else if (pergunta.includes("saude") || pergunta.includes("doença") || pergunta.includes("corpo")) {
+            resposta = "A espiritualidade pede atenção ao equilíbrio. Procure descansar a mente e renovar suas energias na terra. O corpo reflete o que a alma cala.";
+        } else if (pergunta.includes("quem") || pergunta.includes("inveja") || pergunta.includes("inimigo")) {
+            resposta = "Tatá Caveira avisa: nem todos que sorriem caminham ao seu lado. O oráculo indica proteção, mas pede vigilância e que você não conte seus planos a ninguém.";
+        } else {
+            resposta = "Os mistérios de Tatá Caveira revelam que a resposta está na sua paciência. O que você busca virá no tempo da espiritualidade, desde que você mantenha sua fé firme.";
+        }
+
+        document.getElementById('res-nome').innerText = `Consulte o destino, ${nome}:`;
+        document.getElementById('res-texto').innerText = resposta;
+        document.getElementById('resultado').style.display = 'block';
+        
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
