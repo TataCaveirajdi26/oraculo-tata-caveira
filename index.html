@@ -23,8 +23,8 @@
             border: 1px solid #333;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
         }
-        h1 { color: #b30000; text-align: center; font-size: 1.8rem; margin-bottom: 25px; }
-        label { display: block; margin-top: 10px; font-size: 0.9rem; color: #888; }
+        h1 { color: #b30000; text-align: center; font-size: 1.8rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
+        label { display: block; margin-top: 10px; font-size: 0.8rem; color: #777; text-transform: uppercase; }
         input, textarea {
             width: 100%;
             padding: 12px;
@@ -34,15 +34,17 @@
             color: white;
             border-radius: 4px;
             box-sizing: border-box;
+            outline: none;
         }
+        input:focus, textarea:focus { border-color: #b30000; }
         .cards-area {
             display: flex;
             justify-content: space-between;
             margin: 20px 0;
         }
         .card {
-            width: 60px;
-            height: 90px;
+            width: 65px;
+            height: 95px;
             background: #1a1a1a;
             border: 2px solid #b30000;
             border-radius: 5px;
@@ -53,35 +55,49 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: #b30000;
-            transition: 0.3s;
+            transition: 0.4s ease;
         }
-        .card.selected { background: #b30000; color: gold; transform: translateY(-10px); border-color: gold; }
+        .card.selected { 
+            background: #b30000; 
+            color: gold; 
+            transform: translateY(-15px); 
+            border-color: gold;
+            box-shadow: 0 5px 15px rgba(179, 0, 0, 0.6);
+        }
         
         #btn-revelar {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             background: #4a0000;
             color: white;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             margin-top: 10px;
+            transition: 0.3s;
+            text-transform: uppercase;
         }
-        #btn-revelar:hover { background: #7a0000; }
+        #btn-revelar:hover { background: #8b0000; box-shadow: 0 0 15px #b30000; }
 
         #resultado {
             margin-top: 25px;
             padding: 20px;
             background: #000;
-            border-left: 4px solid #b30000;
+            border: 1px dashed #b30000;
             display: none;
+            animation: fadeIn 1s;
         }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         footer {
             margin-top: 40px;
             font-size: 0.8rem;
-            color: #555;
+            color: #444;
             text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 20px;
+            width: 100%;
         }
     </style>
 </head>
@@ -91,15 +107,15 @@
     <h1>💀 Oráculo do Tatá Caveira</h1>
     
     <label>Nome Completo:</label>
-    <input type="text" id="nome" placeholder="Seu nome...">
+    <input type="text" id="nome" placeholder="Digite seu nome...">
     
     <label>Data de Nascimento:</label>
     <input type="date" id="dataNasc">
     
-    <label>Sua Pergunta (seja breve):</label>
-    <textarea id="pergunta" placeholder="Ex: Vou conseguir o emprego?"></textarea>
+    <label>Sua Pergunta ao Oráculo:</label>
+    <textarea id="pergunta" rows="2" placeholder="Ex: Vou conseguir meu objetivo?"></textarea>
 
-    <p style="text-align: center; font-size: 0.9rem;">Escolha 3 números:</p>
+    <p style="text-align: center; font-size: 0.9rem; color: #888;">Mentalize sua dúvida e escolha 3 números:</p>
     <div class="cards-area">
         <div class="card" onclick="selectCard(this)">1</div>
         <div class="card" onclick="selectCard(this)">2</div>
@@ -108,11 +124,11 @@
         <div class="card" onclick="selectCard(this)">5</div>
     </div>
 
-    <button id="btn-revelar" onclick="revelarDestino()">REVELAR CONSELHO</button>
+    <button id="btn-revelar" onclick="revelarDestino()">REVELAR RESPOSTA ESPIRITUAL</button>
 
     <div id="resultado">
-        <strong id="res-nome" style="color: gold; display: block; margin-bottom: 10px;"></strong>
-        <p id="res-texto"></p>
+        <strong id="res-nome" style="color: gold; display: block; margin-bottom: 10px; font-size: 1.1rem;"></strong>
+        <p id="res-texto" style="font-style: italic; color: #fff;"></p>
     </div>
 </div>
 
@@ -135,32 +151,4 @@
         const pergunta = document.getElementById('pergunta').value.toLowerCase();
 
         if (!nome || !pergunta || cartasSelecionadas < 3) {
-            alert("Preencha tudo e escolha 3 números!");
-            return;
-        }
-
-        let resposta = "";
-
-        // Lógica de nexo com a pergunta
-        if (pergunta.includes("amor") || pergunta.includes("ele") || pergunta.includes("ela") || pergunta.includes("namoro")) {
-            resposta = "Tatá Caveira vê que sentimentos do passado ainda rondam. Para o amor florescer, é preciso limpar as mágoas antigas. O destino exige honestidade.";
-        } else if (pergunta.includes("dinheiro") || pergunta.includes("trabalho") || pergunta.includes("emprego") || pergunta.includes("pagar")) {
-            resposta = "O campo material exige estratégia. Tatá Caveira indica que a porta vai abrir, mas você deve agir com a frieza da razão, sem se deixar levar pela ansiedade.";
-        } else if (pergunta.includes("saude") || pergunta.includes("doença") || pergunta.includes("corpo")) {
-            resposta = "A espiritualidade pede atenção ao equilíbrio. Procure descansar a mente e renovar suas energias na terra. O corpo reflete o que a alma cala.";
-        } else if (pergunta.includes("quem") || pergunta.includes("inveja") || pergunta.includes("inimigo")) {
-            resposta = "Tatá Caveira avisa: nem todos que sorriem caminham ao seu lado. O oráculo indica proteção, mas pede vigilância e que você não conte seus planos a ninguém.";
-        } else {
-            resposta = "Os mistérios de Tatá Caveira revelam que a resposta está na sua paciência. O que você busca virá no tempo da espiritualidade, desde que você mantenha sua fé firme.";
-        }
-
-        document.getElementById('res-nome').innerText = `Consulte o destino, ${nome}:`;
-        document.getElementById('res-texto').innerText = resposta;
-        document.getElementById('resultado').style.display = 'block';
-        
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-</script>
-
-</body>
-</html>
+            alert("⚠️ Tatá Caveira pede que você preencha todos os campos e escolha as
